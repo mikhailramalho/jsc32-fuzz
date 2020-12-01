@@ -21,8 +21,8 @@ jobs:
     - run: rm -Rf /tmp/web_tests && mkdir /tmp/web_tests
     - run: python scripts/prepare_web_tests.py
       env:
-        TESTS_ARCHIVE_NAME=web_tests.zip
-        TESTS_DIR=/tmp/web_tests
+        TESTS_ARCHIVE_NAME: web_tests.zip
+        TESTS_DIR: /tmp/web_tests
     - uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
