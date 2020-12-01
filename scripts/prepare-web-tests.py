@@ -14,6 +14,10 @@
 # limitations under the License.
 """Create public web tests package to use with js_fuzzer."""
 
+# Run it like this:
+# TESTS_ARCHIVE_NAME=web_tests.zip TESTS_DIR=/tmp/web_tests python prepare-web-tests.py
+# Grab /tmp/web_tests/web_tests.zip and unpack it to run js_fuzzer
+
 # Before any other imports, we must fix the path. Some libraries might expect
 # to be able to import dependencies directly, but we must store these in
 # subdirectories of common so that they are shared with App Engine.
