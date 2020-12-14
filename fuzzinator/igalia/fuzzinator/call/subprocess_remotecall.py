@@ -76,21 +76,18 @@ def SubprocessRemoteCall(username, hostname, port, command, env=None, no_exit_co
     # the call. Can we add a pre-execution step of sorts?
     
     try:
-        client.connect(hostname, port=port, username=username)
+        client.connect(hostname, port=port, username=username, banner_timeout=200)
         print("after connect", file=sys.stderr)
         cmd = command.format(test=test)
         
         print(f"executing {cmd} (env: {env}) with timeout {timeout} secs", file=sys.stderr)
 
-        chan = client.get_transport().open_session(timeout=timeout)
-        chan.settimeout(timeout)
-        chan.update_environment(env)
-        chan.exec_command(cmd)
-        stdout = chan.makefile("r")
-        stderr = chan.makefile_stderr("r")
-        
+        _, stdout, stderr = client.exec_command(cmd, timeout=timeout, get_pty=True)
+        out = stdout.read()
+        err = stderr.read()
+                
         print("after exec_command", file=sys.stderr)
-        returncode = chan.recv_exit_status()
+        returncode = stdout.channel.recv_exit_status()
         print(f"after getting returncode: {returncode}", file=sys.stderr) 
         # returncode might be -1 if no exit status is provided by the server, see
         # http://docs.paramiko.org/en/stable/api/channel.html#paramiko.channel.Channel.recv_exit_status
@@ -101,16 +98,19 @@ def SubprocessRemoteCall(username, hostname, port, command, env=None, no_exit_co
 
         issue = {
             'exit_code': returncode,
-            'stdout': str(stdout),
-            'stderr': str(stderr),
+            'stdout': out,
+            'stderr': err,
         }
         print("issue: %s\n", issue)
+        print("closing client")
         client.close()
+        
         if no_exit_code or returncode != 0:
             return issue
     except socket.timeout:
         print("TIMEOUT", file=sys.stderr)
         logger.debug('Timeout expired in the SUT\'s remote subprocess runner.')
+        print("closing client")
         client.close()
 
     return NonIssue(issue) if issue else None
