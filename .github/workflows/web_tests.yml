@@ -14,12 +14,12 @@ jobs:
     runs-on: ubuntu-20.04
     
     steps:
+    - uses: actions/checkout@v2
     - run: sudo apt-get update
     - run: sudo apt-get install -y python3 git subversion
     - run: git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
     - run: echo "$PWD/depot_tools" >> $GITHUB_PATH
     - run: rm -Rf /tmp/web_tests && mkdir /tmp/web_tests
-    - run: find .
     - run: python scripts/prepare-web-tests.py
       env:
         TESTS_ARCHIVE_NAME: web_tests.zip
