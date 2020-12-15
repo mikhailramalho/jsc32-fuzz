@@ -23,6 +23,7 @@ jobs:
       env:
         TESTS_ARCHIVE_NAME: web_tests.zip
         TESTS_DIR: /tmp/web_tests
+    - run: find .
     - uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
