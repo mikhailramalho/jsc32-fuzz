@@ -52,7 +52,7 @@ def clone_git_repository(tests_directory, name, repo_url):
   directory = os.path.join(tests_directory, name)
   if not os.path.exists(directory):
     subprocess.check_call(
-        ['git', 'clone', '--depth=1', repo_url, name], cwd=tests_directory)
+        ['git', 'clone', '--quiet', '--depth=1', repo_url, name], cwd=tests_directory)
 
   if os.path.exists(directory):
     subprocess.check_call(['git', 'pull'], cwd=directory)
@@ -67,7 +67,7 @@ def checkout_svn_repository(tests_directory, name, repo_url):
   directory = os.path.join(tests_directory, name)
   if not os.path.exists(directory):
     subprocess.check_call(
-        ['svn', 'checkout', repo_url, directory], cwd=tests_directory)
+        ['svn', 'checkout', '--quiet', repo_url, directory], cwd=tests_directory)
 
   if os.path.exists(directory):
     subprocess.check_call(['svn', 'update', directory], cwd=tests_directory)
@@ -178,7 +178,7 @@ def main():
 
   # FIXME: Find a way to rename LayoutTests to web_tests without breaking
   # compatibility with older testcases.
-  create_symbolic_link(tests_directory, 'src/third_party/blink/web_tests',
+  create_symbolic_link(tests_directory, 'chromium/third_party/blink/web_tests',
                        'LayoutTests')
 
   subprocess.check_call(
@@ -186,7 +186,6 @@ def main():
           'zip',
           '-r',
           tests_archive_local,
-#          'CrashTests',
           'LayoutTests',
           'WebKit',
           'gecko-tests',
@@ -210,6 +209,7 @@ def main():
           '*.svn*',
       ],
       cwd=tests_directory)
+  print('archive is in {}'.format(os.path.join(tests_directory, tests_archive_local)))
 
 if __name__ == '__main__':
   main()
