@@ -1,10 +1,10 @@
 name: Build web tests release
 
 on:
-  push:
-    paths:
-    - '.github/workflows/web_tests.yml'
-    - 'scripts/prepare-web-tests.py'
+#  push:
+#    paths:
+#    - '.github/workflows/web_tests.yml'
+#    - 'scripts/prepare-web-tests.py'
   schedule:
     - cron: '0 0 * * *'
 
