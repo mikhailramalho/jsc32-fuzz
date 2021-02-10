@@ -25,6 +25,7 @@ jobs:
         TESTS_ARCHIVE_NAME: web_tests.zip
         TESTS_DIR: /tmp/web_tests
     - uses: actions/create-release@v1
+      id: create_release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -33,3 +34,11 @@ jobs:
         body: Nightly Release
         draft: false
         prerelease: false
+    - uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: /tmp/web_tests/web_tests.zip
+        asset_name: web_tests.zip
+        asset_content_type: application/zip
