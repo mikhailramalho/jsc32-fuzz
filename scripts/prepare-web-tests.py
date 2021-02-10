@@ -12,6 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# Based on code from ClusterFuzz:
+# https://github.com/google/clusterfuzz/blob/master/src/python/scripts/other-bots/chromium-tests-syncer/run.py
 """Create public web tests package to use with js_fuzzer."""
 
 # Run it like this:
@@ -21,10 +24,26 @@
 # Before any other imports, we must fix the path. Some libraries might expect
 # to be able to import dependencies directly, but we must store these in
 # subdirectories of common so that they are shared with App Engine.
+
 import os
 import re
 import subprocess
 import time
+
+def clone_chromium_web_tests(tests_directory):
+  """Use a shallow sparse checkout to quickly get the Chromium tests."""
+  print('Setting up chromium tests')
+
+  chromium=os.path.join(tests_directory, 'chromium')
+  
+  os.makedirs(chromium)
+  subprocess.check_call(['git', 'init'], cwd=chromium)
+  subprocess.check_call(['git', 'remote', 'add', 'origin', 'https://github.com/chromium/chromium.git'],
+                        cwd=chromium)
+  with open(os.path.join(chromium, '.git/info/sparse-checkout'), 'w') as fileObject:
+    fileObject.write('third_party/blink/web_tests/\n')
+  subprocess.check_call(['git', 'pull', 'origin', 'master', '--depth', '1'],
+                        cwd=chromium)
 
 def clone_git_repository(tests_directory, name, repo_url):
   """Clone a git repo."""
@@ -121,19 +140,9 @@ def main():
 
   # Sync web tests.
   print('Syncing web tests.')
-  src_directory = os.path.join(tests_directory, 'src')
-  gclient_file_path = os.path.join(tests_directory, '.gclient')
-  if not os.path.exists(gclient_file_path):
-    subprocess.check_call(
-        ['fetch', '--no-history', 'chromium', '--nosvn=True'],
-        cwd=tests_directory)
-  if os.path.exists(src_directory):
-    subprocess.check_call(['gclient', 'revert'], cwd=src_directory)
-    subprocess.check_call(['git', 'pull'], cwd=src_directory)
-    subprocess.check_call(['gclient', 'sync'], cwd=src_directory)
-  else:
-    raise Exception('Unable to checkout web tests.')
 
+  clone_chromium_web_tests(tests_directory)
+  
   clone_git_repository(tests_directory, 'v8',
                        'https://chromium.googlesource.com/v8/v8')
 
@@ -168,7 +177,7 @@ def main():
   create_symbolic_link(tests_directory, 'ChakraCore/test', 'chakra')
 
   # FIXME: Find a way to rename LayoutTests to web_tests without breaking
-  # compatability with older testcases.
+  # compatibility with older testcases.
   create_symbolic_link(tests_directory, 'src/third_party/blink/web_tests',
                        'LayoutTests')
 
