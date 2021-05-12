@@ -16,8 +16,17 @@ Load the test below with `{{build_name|trim}}`:
 ```
 {% endif %}
 
-Output:
+Output Port:
+```
+{{stdout|trim}}
+```
+
+Error Port:
 ```
 {{stderr|trim}}
+```
+
+Backtrace:
+```
 {{backtrace|trim}}
 ```
