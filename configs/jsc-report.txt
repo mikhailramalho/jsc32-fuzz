@@ -1,4 +1,4 @@
-Checked version: r{{version|trim}}
+Checked version: git{{version|trim}}
 OS: {{platform}}
 Build command: {{build_command|trim}}
 
