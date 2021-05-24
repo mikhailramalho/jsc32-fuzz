@@ -19,7 +19,8 @@ JSC_MULTI_ARGS = ["--jitPolicyScale=0",
                   "--forceEagerCompilation=1",
                   "--useConcurrentGC=0",
                   "--useConcurrentJIT=0",
-                  "--returnEarlyFromInfiniteLoopsForFuzzing=1 --earlyReturnFromInfiniteLoopsLimit=1000000"]
+                  "--returnEarlyFromInfiniteLoopsForFuzzing=1 --earlyReturnFromInfiniteLoopsLimit=1000000"
+                  "--verifyGC=true"]
 
 # Function executes exactly like SubprocessCall but adds,
 # randomly arguments from JSC_MULTI_ARGS
