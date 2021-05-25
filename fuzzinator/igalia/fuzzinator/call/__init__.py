@@ -1,3 +1,4 @@
+# Copyright (c) 2021 Paulo Matos, Igalia S.L.
 # Copyright (c) 2020 Paulo Matos, Igalia S.L.
 #
 # Licensed under the BSD 3-Clause License
@@ -7,6 +8,7 @@
 
 from .remotefile_writer_decorator import RemoteFileWriterDecorator
 from .subprocess_remotecall import SubprocessRemoteCall
+from .subprocess_jsccall import SubprocessJSCCall
 
 try:
     from .test_runner_subprocess_remotecall import TestRunnerSubprocessRemoteCall
