@@ -10,7 +10,7 @@ import random
 
 from fuzzinator.config import as_bool, as_dict, as_pargs, as_path
 from fuzzinator import Controller
-from fuzzinator.call import NonIssue
+from fuzzinator.call import NonIssue, SubprocessCall
 
 logger = logging.getLogger(__name__)
 
