@@ -40,4 +40,4 @@ def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
     newcommand.append(command[1:])
     
     # Call SubprocessCall
-    return SubprocessCall(newcommand, cwd, env, no_exit_code, test, timeout)
+    return SubprocessCall(' '.join(newcommand), cwd, env, no_exit_code, test, timeout)
