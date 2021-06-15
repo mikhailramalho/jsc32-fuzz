@@ -20,7 +20,7 @@ JSC_MULTI_ARGS = ["--jitPolicyScale=0",
                   "--forceEagerCompilation=1",
                   "--useConcurrentGC=0",
                   "--useConcurrentJIT=0",
-                  "--returnEarlyFromInfiniteLoopsForFuzzing=1 --earlyReturnFromInfiniteLoopsLimit=1000000"
+                  "--returnEarlyFromInfiniteLoopsForFuzzing=1 --earlyReturnFromInfiniteLoopsLimit=1000000",
                   "--verifyGC=true"]
 
 # Function executes exactly like SubprocessCall but adds,
@@ -29,15 +29,15 @@ def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
                       timeout=None, **kwargs):
     # Separate {test} from the remainder of the command line
     parts = command.split()
-                  
+    
     # Add the args randomly
     smp = random.sample(JSC_MULTI_ARGS,
                         k=random.randint(0, len(JSC_MULTI_ARGS)))
                   
     # Rebuild command
-    newcommand = [command[0]]
-    newcommand.append(smp)
-    newcommand.append(command[1:])
-    
+    newcommand = [parts[0]]
+    newcommand += smp
+    newcommand += parts[1:]
+        
     # Call SubprocessCall
     return SubprocessCall(' '.join(newcommand), cwd, env, no_exit_code, test, timeout)
