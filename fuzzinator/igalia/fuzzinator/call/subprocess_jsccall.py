@@ -38,6 +38,12 @@ def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
     newcommand = [parts[0]]
     newcommand += smp
     newcommand += parts[1:]
-        
+    newcommand = ' '.join(newcommand)
+    
     # Call SubprocessCall
-    return SubprocessCall(' '.join(newcommand), cwd, env, no_exit_code, test, timeout)
+    issue = SubprocessCall(newcommand, cwd, env, no_exit_code, test, timeout)
+    if issue: # a non-issue is always false
+        issue['execute_command'] = newcommand
+
+    return issue
+
