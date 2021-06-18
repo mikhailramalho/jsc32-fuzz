@@ -25,25 +25,23 @@ JSC_MULTI_ARGS = ["--jitPolicyScale=0",
 
 # Function executes exactly like SubprocessCall but adds,
 # randomly arguments from JSC_MULTI_ARGS
-def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
+def SubprocessJSCCall(binary, cwd=None, env=None, no_exit_code=None, test=None,
                       timeout=None, **kwargs):
-    # Separate {test} from the remainder of the command line
-    parts = command.split()
-    
     # Add the args randomly
     smp = random.sample(JSC_MULTI_ARGS,
                         k=random.randint(0, len(JSC_MULTI_ARGS)))
                   
     # Rebuild command
-    newcommand = [parts[0]]
+    newcommand = []
+    newcommand.append(binary)
     newcommand += smp
-    newcommand += parts[1:]
+    newcommand.append('{test}')
     newcommand = ' '.join(newcommand)
     
     # Call SubprocessCall
     issue = SubprocessCall(newcommand, cwd, env, no_exit_code, test, timeout)
     if issue: # a non-issue is always false
-        issue['execute_command'] = newcommand
-
+        issue['command'] = newcommand
+        
     return issue
 
