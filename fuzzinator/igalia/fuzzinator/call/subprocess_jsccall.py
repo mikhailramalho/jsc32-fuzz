@@ -7,6 +7,7 @@
 import logging
 import os
 import random
+import string
 
 from fuzzinator.call import NonIssue, SubprocessCall
 
@@ -21,6 +22,20 @@ JSC_MULTI_ARGS = ["--jitPolicyScale=0",
                   "--returnEarlyFromInfiniteLoopsForFuzzing=1 --earlyReturnFromInfiniteLoopsLimit=1000000",
                   "--verifyGC=true"]
 
+class FormatPlaceholder:
+    def __init__(self, key):
+        self.key = key
+
+    def __format__(self, spec):
+        result = self.key
+        if spec:
+            result += ":" + spec
+        return "{" + result + "}"
+
+class FormatDict(dict):
+    def __missing__(self, key):
+        return FormatPlaceholder(key)
+
 # Function executes exactly like SubprocessCall but adds,
 # randomly arguments from JSC_MULTI_ARGS
 def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
@@ -31,7 +46,13 @@ def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
                   
     # Build options
     options = ' '.join(options_list)
-    command = command.format(options=options)
+
+    formatter = string.Formatter()
+    
+    # cannot use `.format` because it's partial
+    # format: key 'test' is not yet defined
+    mapping = FormatDict(options=options)
+    command = formatter.vformat(command, (), mapping)
     
     # Call SubprocessCall
     return SubprocessCall(command, cwd, env, no_exit_code, test, timeout)
