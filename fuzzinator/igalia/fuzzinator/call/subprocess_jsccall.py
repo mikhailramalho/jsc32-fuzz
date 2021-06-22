@@ -42,20 +42,33 @@ class FormatDict(dict):
 # randomly arguments from JSC_MULTI_ARGS
 def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
                       timeout=None, **kwargs):
-    # Add the args randomly
-    options_list = random.sample(JSC_MULTI_ARGS,
+
+    # If we are reducing or validating, then kwargs will contain the
+    # issues fields, and we add the options field before returning from
+    # this function when an issue is found.
+    # We check if options exists and if it does we use it, otherwise
+    # we randomly select a set of options.
+    if 'options' not in kwargs:
+        # Add the args randomly
+        options_list = random.sample(JSC_MULTI_ARGS,
                                  k=random.randint(0, len(JSC_MULTI_ARGS)))
                   
-    # Build options
-    options = ' '.join(options_list)
-
+        # Build options
+        options = ' '.join(options_list)
+    else:
+        options = kwargs['options']
+        
     formatter = string.Formatter()
     
     # cannot use `.format` because it's partial
     # format: key 'test' is not yet defined
     mapping = FormatDict(options=options)
     command = formatter.vformat(command, (), mapping)
-    
+
+    issue = SubprocessCall(command, cwd, env, no_exit_code, test, timeout)
+    if issue:
+        issue['options'] = options
+
     # Call SubprocessCall
-    return SubprocessCall(command, cwd, env, no_exit_code, test, timeout)
+    return issue
 

@@ -9,6 +9,6 @@
 
 PREFIX=$1
 
-${PREFIX} Tools/Scripts/set-webkit-configuration --asan --debug --force-optimization-level=O3
+${PREFIX} Tools/Scripts/set-webkit-configuration --debug --force-optimization-level=O3
 ${PREFIX} Tools/Scripts/build-jsc --jsc-only
 
