@@ -16,6 +16,8 @@ logger = logging.getLogger(__name__)
 # List of possible arguments for the call
 # chosen randomly
 JSC_MULTI_ARGS = ["--jitPolicyScale=0",
+                  "--useJIT=false",
+                  "--forceGCSlowPaths=true",
                   "--forceEagerCompilation=1",
                   "--useConcurrentGC=0",
                   "--useConcurrentJIT=0",
