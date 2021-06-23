@@ -4,7 +4,7 @@ OS: `{{platform}}`
 
 Build command: `{{build_command|trim}}`
 
-Execution command: `{{command|trim}}`
+Execution command: `{{exec_command|trim}}`
 
 Load the test below with `{{build_name|trim}}`:
 
