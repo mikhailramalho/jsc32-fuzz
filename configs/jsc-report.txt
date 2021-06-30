@@ -1,3 +1,5 @@
+Please read https://gitlab.igalia.com/teams/webkit/jsc-fuzzing#guidelines-for-the-fuzzing-process before reporting upstream.
+
 Checked version: git`{{version|trim}}`
 
 OS: `{{platform}}`
