@@ -4,6 +4,12 @@ Checked version: git`{{version|trim}}`
 
 OS: `{{platform}}`
 
+Default G++:
+
+```
+{{gcc_version}}
+```
+
 Build command: `{{build_command|trim}}`
 
 Execution command: `{{exec_command|trim}}`
