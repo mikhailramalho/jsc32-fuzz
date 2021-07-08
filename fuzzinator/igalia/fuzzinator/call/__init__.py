@@ -9,6 +9,7 @@
 from .remotefile_writer_decorator import RemoteFileWriterDecorator
 from .subprocess_remotecall import SubprocessRemoteCall
 from .subprocess_jsccall import SubprocessJSCCall
+from .jsc_gdb_backtrace_decorator import JSCGdbBacktraceDecorator
 
 try:
     from .test_runner_subprocess_remotecall import TestRunnerSubprocessRemoteCall
