@@ -13,8 +13,8 @@ import logging
 import os
 import pexpect
 
-from ..config import as_dict, as_pargs, as_path
-from . import CallableDecorator
+from fuzzinator.config import as_dict, as_pargs, as_path
+from fuzzinator.call import CallableDecorator
 
 logger = logging.getLogger(__name__)
 
