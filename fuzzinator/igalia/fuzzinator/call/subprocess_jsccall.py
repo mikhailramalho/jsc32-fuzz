@@ -4,7 +4,6 @@
 # <LICENSE.rst or https://opensource.org/licenses/BSD-3-Clause>.
 # This file may not be copied, modified, or distributed except
 
-import logging
 import os
 import random
 import string
@@ -65,7 +64,7 @@ def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
 
     issue = SubprocessCall(command, cwd, env, no_exit_code, test, timeout)
     if issue:
-        kwargs['options'] = options
+        issue['options'] = options
 
     # Call SubprocessCall
     return issue

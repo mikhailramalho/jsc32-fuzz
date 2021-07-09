@@ -70,7 +70,7 @@ class JSCGdbBacktraceDecorator(CallableDecorator):
                     return issue
 
                 try:
-                    child = pexpect.spawn('gdb', ['-ex', 'set width unlimited', '-ex', 'set pagination off', '--args'] + as_pargs(command.format(test=kwargs['test'], options=kwargs['options'])),
+                    child = pexpect.spawn('gdb', ['-ex', 'set width unlimited', '-ex', 'set pagination off', '--args'] + as_pargs(command.format(test=kwargs['test'], options=issue['options'])),
                                           cwd=as_path(cwd) if cwd else os.getcwd(),
                                           env=dict(os.environ, **as_dict(env or '{}')))
                     child.expect_exact('(gdb) ')
