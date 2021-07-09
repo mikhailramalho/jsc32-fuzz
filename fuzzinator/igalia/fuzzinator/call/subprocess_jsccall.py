@@ -65,7 +65,7 @@ def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
 
     issue = SubprocessCall(command, cwd, env, no_exit_code, test, timeout)
     if issue:
-        issue['options'] = options
+        kwargs['options'] = options
 
     # Call SubprocessCall
     return issue
