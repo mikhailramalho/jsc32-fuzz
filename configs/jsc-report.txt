@@ -10,9 +10,8 @@ Default G++:
 {{gcc_version}}
 ```
 
-Build command: `{{build_command|trim}}`
-
-Execution command: `{{exec_command|trim}}`
+Build command: `{{build_command|trim}}` 
+Execution command `{{exec_command|trim}}` returned exit code `{{exit_code|trim}}`
 
 Load the test below with `{{build_name|trim}}`:
 
