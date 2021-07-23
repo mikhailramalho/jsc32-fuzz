@@ -11,7 +11,7 @@ Default G++:
 ```
 
 Build command: `{{build_command|trim}}` 
-Execution command `{{exec_command|trim}}` returned exit code `{{exit_code|trim}}`
+Execution command `jsc {{options|trim}}` returned exit code `{{exit_code|trim}}`
 
 Load the test below with `{{build_name|trim}}`:
 
