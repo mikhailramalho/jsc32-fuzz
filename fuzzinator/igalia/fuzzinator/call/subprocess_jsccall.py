@@ -39,7 +39,7 @@ class FormatDict(dict):
 # Function executes exactly like SubprocessCall but adds,
 # randomly arguments from JSC_MULTI_ARGS
 def SubprocessJSCCall(command, cwd=None, env=None, no_exit_code=None, test=None,
-                      timeout=None, **kwargs):
+                      timeout=None, encoding=None, **kwargs):
     # If we are reducing or validating, then kwargs will contain the
     # issues fields, and we add the options field before returning from
     # this function when an issue is found.

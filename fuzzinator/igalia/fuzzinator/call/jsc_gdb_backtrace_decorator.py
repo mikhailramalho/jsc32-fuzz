@@ -13,7 +13,7 @@ import logging
 import os
 import pexpect
 
-from fuzzinator.config import as_dict, as_pargs, as_path
+from fuzzinator.config import as_dict, as_pargs, as_path, decode
 from fuzzinator.call import CallableDecorator
 
 logger = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ class JSCGdbBacktraceDecorator(CallableDecorator):
             env={"BAR": "1", "BAZ": "1"}
     """
 
-    def decorator(self, command, cwd=None, env=None, **kwargs):
+    def decorator(self, command, cwd=None, env=None, encoding=None, **kwargs):
         def wrapper(fn):
             def filter(*args, **kwargs):
                 issue = fn(*args, **kwargs)
@@ -80,7 +80,7 @@ class JSCGdbBacktraceDecorator(CallableDecorator):
                     child.expect_exact('(gdb) ')
                     backtrace = child.before
                     child.terminate(force=True)
-                    issue['backtrace'] = backtrace
+                    issue['backtrace'] = decode(backtrace, encoding)
                 except Exception as e:
                     logger.warning('Failed to obtain gdb backtrace', exc_info=e)
 
