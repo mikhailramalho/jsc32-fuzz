@@ -35,7 +35,10 @@ def clone_chromium_web_tests(tests_directory):
   print('Setting up chromium tests')
 
   chromium=os.path.join(tests_directory, 'chromium')
-  
+
+  if  os.path.exists(chromium):
+    return
+
   os.makedirs(chromium)
   subprocess.check_call(['git', 'init'], cwd=chromium)
   subprocess.check_call(['git', 'remote', 'add', 'origin', 'https://github.com/chromium/chromium.git'],
