@@ -36,13 +36,12 @@ def clone_chromium_web_tests(tests_directory):
 
   chromium=os.path.join(tests_directory, 'chromium')
 
-  if  os.path.exists(chromium):
-    return
-
-  os.makedirs(chromium)
-  subprocess.check_call(['git', 'init'], cwd=chromium)
-  subprocess.check_call(['git', 'remote', 'add', 'origin', 'https://github.com/chromium/chromium.git'],
+  if not os.path.exists(chromium):
+    os.makedirs(chromium)
+    subprocess.check_call(['git', 'init'], cwd=chromium)
+    subprocess.check_call(['git', 'remote', 'add', 'origin', 'https://github.com/chromium/chromium.git'],
                         cwd=chromium)
+
   with open(os.path.join(chromium, '.git/info/sparse-checkout'), 'w') as fileObject:
     fileObject.write('third_party/blink/web_tests/\n')
   subprocess.check_call(['git', 'pull', 'origin', 'master', '--depth', '1'],
